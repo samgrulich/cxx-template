@@ -11,7 +11,6 @@ struct Matrix {
 
     Matrix() : rows(0), cols(0), data(nullptr) {}
     Matrix(int rows, int cols);
-    ~Matrix() {}
 
     uint& operator()(int row, int col);
     void operator()(int row, int col, uint value);

@@ -6,6 +6,9 @@ project(alg_hw01
     LANGUAGES CXX
 )
 
+include(CTest)
+add_subdirectory(libs/googletest)
+
 if (NOT CMAKE_BUILD_TYPE) 
     set(CMAKE_BUILD_TYPE Debug)
 endif()
@@ -16,3 +19,4 @@ target_compile_features(cxx_setup INTERFACE cxx_std_20)
 target_include_directories(cxx_setup INTERFACE "${PROJECT_SOURCE_DIR}/src/")
 
 add_subdirectory(src)
+add_subdirectory(tests)

@@ -54,11 +54,6 @@ void State::parseInput(int y, int x, uint value) {
     sIndex++;
 }
 
-// bool containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorCount) {
-//     int sectorsInside = sSectorPrefixes(endY, endX) - sSectorPrefixes(startY-1, endX) - sSectorPrefixes(endY, startX-1) + sSectorPrefixes(startY-1, startX-1);
-//     return sectorsInside == sectorCount / 2;
-// }
-
 bool State::containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorCount) {
     int sectorsInside = sectorPrefixes(endY, endX) - sectorPrefixes(startY-1, endX) - sectorPrefixes(endY, startX-1) + sectorPrefixes(startY-1, startX-1);
     return sectorsInside == sectorCount / 2;
