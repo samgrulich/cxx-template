@@ -1,4 +1,5 @@
 #include "lib.h"
+#include <string>
 
 Matrix::Matrix(int rows, int cols) : rows(rows+1), cols(cols+1) {
     data = std::shared_ptr<uint>(new uint[(this->rows) * (this->cols)]);
@@ -10,12 +11,32 @@ Matrix::Matrix(int rows, int cols) : rows(rows+1), cols(cols+1) {
     }
 }
 
+Matrix::Matrix(int rows, int cols, uint data[]) : Matrix(rows, cols) {
+    for (int y = 1; y < this->rows; y++) {
+        for (int x = 1; x < this->cols; x++) {
+            this->data.get()[y * this->cols + x] = data[(y-1) * cols + (x-1)];
+        }
+    }
+}
+
 uint& Matrix::operator()(int row, int col) {
     return data.get()[(row+1) * cols + col+1];
 }
 
 void Matrix::operator()(int row, int col, uint value) {
     data.get()[(row+1) * cols + col+1] = value;
+}
+
+bool Matrix::operator==(const Matrix& other) const {
+    if (rows != other.rows || cols != other.cols)
+        return false;
+    for (int y = 1; y < rows; y++) {
+        for (int x = 1; x < cols; x++) {
+            if (data.get()[y * cols + x] != other.data.get()[y * cols + x])
+                return false;
+        }
+    }
+    return true;
 }
 
 void Matrix::print() {
@@ -28,10 +49,20 @@ void Matrix::print() {
     }
 }
 
+std::string Matrix::toString() {
+    std::string result("");
+    result += "Matrix " + std::to_string(rows-1) + " x " + std::to_string(cols-1) + "\n";
+    for (int y = 1; y < rows; y++) {
+        for (int x = 1; x < cols; x++) {
+            result += std::to_string(data.get()[y * cols + x]) + " ";
+        }
+        result += "\n";
+    }
+    return result;
+}
+
 void State::parseInput(int y, int x, uint value) {
     static size_t sIndex = 0;
-    static int prevY = 0;
-    static int rowSectorChanges = 0;
 
     values(y, x, value);
     colPrefixes(y, x) = colPrefixes(y-1, x) + value;
@@ -44,15 +75,19 @@ void State::parseInput(int y, int x, uint value) {
     bool isPrevColSector = x != 0 ? values(y, x-1) == 0 : false;
     bool isPrevRowSector = y != 0 ? values(y-1, x) == 0 : false;
     int val = isValSector && !isPrevRowSector && !isPrevColSector ? 1 : 0;
-    rowSectorChanges += val; 
-    sectorPrefixes(y, x) = sectorPrefixes(y-1, x) + rowSectorChanges;
+    sectorPrefixes(y, x) = sectorPrefixes(y-1, x) + sectorPrefixes(y, x-1) - sectorPrefixes(y-1, x-1) + val;
 
-    if (prevY != y) {
-        rowSectorChanges = 0;
-        prevY = y;
-    }
     sIndex++;
 }
+
+void State::parseInputs(uint data[]) {
+    for (int i = 0; i < rows * cols; i++) {
+        int y = i / cols;
+        int x = i % cols;
+        parseInput(y, x, data[i]);
+    }
+}
+
 
 bool State::containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorCount) {
     int sectorsInside = sectorPrefixes(endY, endX) - sectorPrefixes(startY-1, endX) - sectorPrefixes(endY, startX-1) + sectorPrefixes(startY-1, startX-1);

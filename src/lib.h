@@ -11,10 +11,13 @@ struct Matrix {
 
     Matrix() : rows(0), cols(0), data(nullptr) {}
     Matrix(int rows, int cols);
+    Matrix(int rows, int cols, uint data[]);
 
     uint& operator()(int row, int col);
     void operator()(int row, int col, uint value);
+    bool operator==(const Matrix& other) const;
     void print();
+    std::string toString();
 };
 
 struct State {
@@ -37,6 +40,7 @@ struct State {
     }
 
     void parseInput(int y, int x, uint value);
+    void parseInputs(uint data[]);
     bool containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorCount);
     bool containsRowEdgeSector(int startX, int endX, int y);
     bool containsColEdgeSector(int startY, int endY, int x);
