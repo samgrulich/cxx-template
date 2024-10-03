@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 #include <cstdio>
 #include <memory>
 
@@ -41,7 +42,7 @@ struct State {
 
     void parseInput(int y, int x, uint value);
     void parseInputs(uint data[]);
-    bool containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorCount);
+    bool containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorHalf);
     bool containsRowEdgeSector(int startX, int endX, int y);
     bool containsColEdgeSector(int startY, int endY, int x);
     bool containsAnyEdgeSector(int startX, int startY, int endX, int endY);

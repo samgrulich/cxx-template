@@ -88,10 +88,19 @@ void State::parseInputs(uint data[]) {
     }
 }
 
+bool State::containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorHalf) {
+    int rect1 = sectorPrefixes(endY, endX);
+    int rect2 = sectorPrefixes(startY-1, startX-1);
+    int rect3 = sectorPrefixes(startY-1, endX);
+    int rect4 = sectorPrefixes(endY, startX-1);
 
-bool State::containsHalfOfAllSectors(int startX, int startY, int endX, int endY, int sectorCount) {
-    int sectorsInside = sectorPrefixes(endY, endX) - sectorPrefixes(startY-1, endX) - sectorPrefixes(endY, startX-1) + sectorPrefixes(startY-1, startX-1);
-    return sectorsInside == sectorCount / 2;
+    if (rect1 < sectorHalf)
+        return false;
+    if (rect1 - rect2 < sectorHalf)
+        return false;
+
+    int sectorSum = rect1 - rect2 - rect3 + rect4;
+    return sectorSum == sectorHalf;
 }
 
 bool State::containsRowEdgeSector(int startX, int endX, int y) {

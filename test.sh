@@ -1,7 +1,8 @@
+#!/bin/bash
 cmake -B build -S .
 cmake --build build
 
-filepath=find "build/src" "-type" "f" "-executable" "-print"
+filepath=$(find build/src -type f -executable -print)
 
 if [ -z "$filepath" ]; then
     echo "No executable files found"
@@ -15,10 +16,13 @@ fi
 
 # run the program for each in file in tests/data
 input_files=$(ls tests/data | grep .in)
-# for file in $input_files; do
-#     filename="${file}"
-#     ./build/src/$filepath < tests/data/$file > tests/out/$filename.out 2> tests/out/$filename.err
-# done
+for file in $input_files; do
+    filename="${file}"
+    ./$filepath < tests/data/$file > tests/out/$filename.out 2> tests/out/$filename.err
+    echo $file
+    cat tests/out/$filename.err
+    echo "----------------"
+done
 
 # run diff tests/out with tests/data for each .out file
 output_files=$(ls tests/data | grep .out)
