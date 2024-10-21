@@ -94,7 +94,7 @@ bool State::containsHalfOfAllSectors(int startX, int startY, int endX, int endY,
     int rect3 = sectorPrefixes(startY-1, endX);
     int rect4 = sectorPrefixes(endY, startX-1);
 
-    if (rect1 < sectorHalf)
+    if (rect1 < sectorHalf) // todo: move this into the for loop(matrix or an array)
         return false;
     if (rect1 - rect2 < sectorHalf)
         return false;
