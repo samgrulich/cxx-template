@@ -1,0 +1,2 @@
+CompileFlags:
+  Add: ["-I../src", -std=c++20]

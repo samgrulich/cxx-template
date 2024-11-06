@@ -1,0 +1,6 @@
+# build helper files
+build/
+
+# Testing helper files
+Testing/
+tests/out/
