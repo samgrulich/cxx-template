@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(alg_hw01
+project(alg_hw
     VERSION 0.0.1
-    DESCRIPTION "Algoritmizace homework 01"
+    DESCRIPTION "Algoritmizace homeworks"
     LANGUAGES CXX
 )
 
